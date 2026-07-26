@@ -14,6 +14,7 @@ const Landing = () => {
           <Link to="/" className="hover:text-cyan-600">Home</Link>
           <button className="hover:text-cyan-600">Features</button>
           <Link to="/dashboard" className="hover:text-cyan-600">Dashboard</Link>
+          <Link to="/voice" className="hover:text-cyan-600">Voice Assistant</Link>
           <button className="hover:text-cyan-600">Contact</button>
           <Link to="/login" className="px-5 py-2 border border-cyan-600 rounded-lg hover:bg-cyan-50">
             Login

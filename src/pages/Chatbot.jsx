@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { sendMessage as sendChatMessage } from "../api/chatbotapi";
 
 const Chatbot = () => {
@@ -72,9 +72,10 @@ const Chatbot = () => {
   return (
     <div className="h-[calc(100vh-80px)] flex flex-col bg-gray-50 p-4">
 
-      <h1 className="text-2xl font-bold text-cyan-800 mb-4">
-        AI Healthcare Assistant
-      </h1>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold text-cyan-800">AI Healthcare Assistant</h1>
+        <div className="flex gap-3"><Link to="/dashboard" className="text-sm font-medium text-cyan-700 hover:underline">Dashboard</Link><Link to="/voice" className="text-sm font-medium text-purple-700 hover:underline">Voice Assistant</Link></div>
+      </div>
 
       <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col">
 

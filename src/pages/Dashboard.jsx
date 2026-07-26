@@ -30,7 +30,7 @@ const Dashboard = () => {
       <div className="mx-auto max-w-5xl">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div><h1 className="text-3xl font-bold text-cyan-800">Dashboard</h1><p className="mt-1 text-slate-600">Your healthcare overview</p></div>
-        <div className="flex gap-3"><Link to="/upload-pdf" className="rounded-lg bg-cyan-600 px-4 py-2 font-medium text-white hover:bg-cyan-700">Upload report</Link><Link to="/chatbot" className="rounded-lg border border-cyan-600 px-4 py-2 font-medium text-cyan-700 hover:bg-cyan-50">Ask AI</Link></div>
+        <div className="flex flex-wrap gap-3"><Link to="/upload-pdf" className="rounded-lg bg-cyan-600 px-4 py-2 font-medium text-white hover:bg-cyan-700">Upload report</Link><Link to="/chatbot" className="rounded-lg border border-cyan-600 px-4 py-2 font-medium text-cyan-700 hover:bg-cyan-50">Ask AI</Link><Link to="/voice" className="rounded-lg border border-purple-600 px-4 py-2 font-medium text-purple-700 hover:bg-purple-50">Voice Assistant</Link></div>
       </div>
       {error && <div role="alert" className="mb-6 rounded-lg bg-amber-50 p-4 text-amber-800">{error} <Link className="font-semibold underline" to="/login">Sign in</Link></div>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

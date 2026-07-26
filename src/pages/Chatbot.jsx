@@ -40,13 +40,13 @@ const Chatbot = () => {
 
       const response = await sendChatMessage(currentPrompt, sessionId, token);
 
-      setSessionId(response.data.data.session_id);
+      setSessionId(response.data.session_id);
 
       setMessages((prev) => [
         ...prev,
         {
           sender: "AI",
-          text: response.data.data.assistant_reply,
+          text: response.data.assistant_reply,
         },
       ]);
     } catch (error) {
@@ -74,7 +74,7 @@ const Chatbot = () => {
 
       <div className="mb-4 flex items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-cyan-800">AI Healthcare Assistant</h1>
-        <div className="flex gap-3"><Link to="/dashboard" className="text-sm font-medium text-cyan-700 hover:underline">Dashboard</Link><Link to="/voice" className="text-sm font-medium text-purple-700 hover:underline">Voice Assistant</Link></div>
+        <div className="flex gap-3"><Link to="/dashboard" className="text-sm font-medium text-cyan-700 hover:underline">Dashboard</Link><Link to="/chat-history" className="text-sm font-medium text-cyan-700 hover:underline">Chat History</Link><Link to="/voice" className="text-sm font-medium text-purple-700 hover:underline">Voice Assistant</Link></div>
       </div>
 
       <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col">

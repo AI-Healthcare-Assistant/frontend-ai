@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadFile } from "../api/uploadapi";
+import { uploadAndAnalyzePdf } from "../api/uploadapi";
 
 const UploadPDF = () => {
     const [file, setFile] = useState(null);
@@ -15,7 +15,7 @@ const UploadPDF = () => {
         try {
             setLoading(true);
 
-            const data = await uploadFile(file);
+            const data = await uploadAndAnalyzePdf(file);
             setResult(data);
 
         } catch (error) {
@@ -48,7 +48,7 @@ const UploadPDF = () => {
                     disabled={loading}
                     className="w-full mt-5 bg-cyan-600 text-white py-3 rounded-xl hover:bg-cyan-700"
                 >
-                    {loading ? "Uploading..." : "Upload PDF"}
+                    {loading ? "Uploading and analyzing..." : "Upload & Analyze PDF"}
                 </button>
 
                 {result && (
@@ -69,6 +69,8 @@ const UploadPDF = () => {
                             <strong>Path:</strong>{" "}
                             {result.data?.relative_path}
                         </p>
+                        {result.data?.summary && <p className="mt-3 whitespace-pre-wrap"><strong>Health summary:</strong> {result.data.summary}</p>}
+                        {result.data?.analysis_result && <p className="mt-3 whitespace-pre-wrap"><strong>Analysis:</strong> {result.data.analysis_result}</p>}
                     </div>
                 )}
 

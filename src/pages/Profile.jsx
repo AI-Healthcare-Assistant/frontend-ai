@@ -1,4 +1,3 @@
-import api from "../api/axios";
 import React from "react";
 
 const Profile = () => {

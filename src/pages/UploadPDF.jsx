@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../api/axios";
+import { uploadFile } from "../api/uploadapi";
 
 const UploadPDF = () => {
     const [file, setFile] = useState(null);
@@ -7,38 +7,20 @@ const UploadPDF = () => {
     const [result, setResult] = useState(null);
 
     const handleUpload = async () => {
-        if (!file) {
-            alert("Please select a PDF file.");
+        if (!file || file.type !== "application/pdf") {
+            alert("Please select a valid PDF file.");
             return;
         }
 
         try {
             setLoading(true);
 
-            const token = localStorage.getItem("token");
-
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const response = await api.post(
-                "/api/v1/upload",
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            console.log(response.data);
-            setResult(response.data);
-
-            alert("PDF Uploaded Successfully");
+            const data = await uploadFile(file);
+            setResult(data);
 
         } catch (error) {
             console.error(error);
-            alert("Upload Failed");
+            alert(error.response?.data?.detail || "Upload failed. Please sign in and try again.");
         } finally {
             setLoading(false);
         }
@@ -59,6 +41,7 @@ const UploadPDF = () => {
                     onChange={(e) => setFile(e.target.files[0])}
                     className="w-full border p-3 rounded-lg"
                 />
+                {file && <p className="mt-3 text-sm text-slate-600">Selected: {file.name} ({Math.ceil(file.size / 1024)} KB)</p>}
 
                 <button
                     onClick={handleUpload}
@@ -79,7 +62,7 @@ const UploadPDF = () => {
 
                         <p>
                             <strong>File URL:</strong>{" "}
-                            {result.data?.file_url}
+                            {result.data?.file_url ? `${import.meta.env.VITE_API_BASE_URL || "https://backend-of-ai-healthcare.onrender.com"}${result.data.file_url}` : "-"}
                         </p>
 
                         <p>

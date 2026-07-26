@@ -1,8 +1,12 @@
 import axios from "axios";
 
+const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://backend-of-ai-healthcare.onrender.com";
+
+// The API clients already include `/api/v1` in their paths.  Keep this value
+// at the backend origin; an accidental `/health` or `/api/v1` suffix breaks all requests.
 const api = axios.create({
     // Set VITE_API_BASE_URL in Vercel for a different deployment target.
-    baseURL: (import.meta.env.VITE_API_BASE_URL || "https://backend-of-ai-healthcare.onrender.com").replace(/\/$/, ""),
+    baseURL: configuredBaseUrl.replace(/\/(api\/v1|api\/v1\/health|health)\/?$/, "").replace(/\/$/, ""),
     headers: {
         "Content-Type": "application/json",
     },

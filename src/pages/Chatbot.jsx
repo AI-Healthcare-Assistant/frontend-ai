@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import api from "../api/axios";
+import { useNavigate } from "react-router-dom";
+import { sendMessage as sendChatMessage } from "../api/chatbotapi";
 
 const Chatbot = () => {
+  const navigate = useNavigate();
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([
     {
@@ -16,6 +18,13 @@ const Chatbot = () => {
   const sendMessage = async () => {
     if (!prompt.trim()) return;
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setMessages((prev) => [...prev, { sender: "AI", text: "Please sign in first to use the healthcare assistant." }]);
+      navigate("/login");
+      return;
+    }
+
     const userMessage = {
       sender: "You",
       text: prompt,
@@ -29,20 +38,7 @@ const Chatbot = () => {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("token");
-
-      const response = await api.post(
-        "/api/v1/chatbot/message",
-        {
-          prompt: currentPrompt,
-          session_id: sessionId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await sendChatMessage(currentPrompt, sessionId, token);
 
       setSessionId(response.data.data.session_id);
 
@@ -54,15 +50,20 @@ const Chatbot = () => {
         },
       ]);
     } catch (error) {
-      console.error(error);
+      const status = error.response?.status;
+      const detail = error.response?.data?.detail;
+      console.error("Chatbot request failed:", error);
 
       setMessages((prev) => [
         ...prev,
         {
           sender: "AI",
-          text: "Unable to connect to AI server.",
+          text: status === 401
+            ? "Your session has expired. Please sign in again."
+            : detail || "The AI assistant is temporarily unavailable. Please try again in a moment.",
         },
       ]);
+      if (status === 401) navigate("/login");
     } finally {
       setLoading(false);
     }
